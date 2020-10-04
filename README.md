@@ -1,15 +1,15 @@
 # OyeRickshawBackendRatingSytstem
 This is a springboot application that uses Mongo as a database.
 The database has 3 collections
-1. rides
+1. rides ( contains 3 fields)
   - rideId(String)
   - passengerId(String)
   - driverId(String)
-2. passengers
+2. passengers ( contains 3 fields)
   - passengersId(String)
   - ridesCompleted(Integer)
   - rating(Double)
-3. drivers
+3. drivers ( contains 3 fields)
   - driversId(String)
   - ridesCompleted(Integer)
   - rating(Double)
