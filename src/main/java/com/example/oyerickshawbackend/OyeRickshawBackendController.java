@@ -7,6 +7,7 @@ import Repositories.PassengerRepository;
 import Repositories.RideRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,16 +48,22 @@ public class OyeRickshawBackendController {
     }
     //Fetches the driverid for a particular rideId and updates the ratings of that driver
     public String rateDriver(String rideId,Double rating){
-        Ride ride=rideRepository.findByRideId(rideId);
+        Ride ride;
+
         String driverId;
         try {
-            driverId=ride.getDriverId();
+            ride=rideRepository.findByRideId(rideId);
         }
-        catch(NullPointerException n){
-            return "Invalid Ride Id";
+        catch(DataAccessResourceFailureException e){
+            return "Couldnt Search Datastore";
         }
+        //catch other exceptions
 
+        if(ride==null)
+            return "Invalid ride Id";
+        driverId=ride.getDriverId();
         Driver driver = driverRepository.findByDriverId(driverId);
+
         Double oldRating = driver.getRating();
         int ridesCompleted = driver.getRidesCompleted();
         Double newRating = ((oldRating * ridesCompleted) + rating) / (ridesCompleted + 1);
@@ -71,14 +78,20 @@ public class OyeRickshawBackendController {
     }
     //Fetches the driverid for a particular rideId and updates the ratings of that driver
     public String ratePassenger(String rideId,Double rating){
-        Ride ride=rideRepository.findByRideId(rideId);
+        Ride ride;
         String passengerId;
         try {
+            ride=rideRepository.findByRideId(rideId);
+        }
+        catch(DataAccessResourceFailureException e){
+            return "Couldnt Search Datastore";
+        }
+        //catch other exceptions
+
+        if(ride==null)
+            return "Invalid ride Id";
             passengerId=ride.getPassengerId();
-        }
-        catch(NullPointerException n){
-            return "Invalid Ride Id";
-        }
+
 
         Passenger passenger=passengerRepository.findByPassengerId(passengerId);
         Double oldRating=passenger.getRating();
@@ -92,20 +105,27 @@ public class OyeRickshawBackendController {
     }
     //Fetches the ratings for a particular driverId
     private String getRatingForDriver(String driverId) {
-        String rating="Not found";
+        Driver driver;
         try{
-            Double d=driverRepository.findByDriverId(driverId).getRating();
-            return d.toString();
+            driver=driverRepository.findByDriverId(driverId);
         }
-        catch (NullPointerException e){return rating;}
+        catch (DataAccessResourceFailureException e){return "Couldnt Search Datastore";}
+        if(driver==null)
+            return  "Invalid driver Id ";
+        Double rating=driver.getRating();
+        return rating.toString();
     }
+
     //Fetches the ratings for a particular driverId
     private String getRatingForPasssenger(String passengerId) {
-        String result="Not found";
+        Passenger passenger;
         try{
-            Double rating=passengerRepository.findByPassengerId(passengerId).getRating();
-            return rating.toString();
+             passenger=passengerRepository.findByPassengerId(passengerId);
         }
-        catch (NullPointerException e){return result;}
+        catch (DataAccessResourceFailureException e){return "Couldnt Search Datastore";}
+        if(passenger==null)
+            return  "Invalid passenger Id ";
+        Double rating=passenger.getRating();
+            return rating.toString();
     }
 }
