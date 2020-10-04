@@ -30,6 +30,7 @@ The application can be used to-
    -  A Patch API with the request mapped to "/passengerrating/{rideId}/{rating}" defined in the REST controller  
 4. The passenger should be able to see his aggregated rating based on all the rides he has taken.
    - A Get API with the request mapped to "/getpassengerrating/{driverId}" defined in the REST controller 
+   
 The Rating ranges from 0-5   
 The application by default runs on server port 8080    
 
