@@ -102,7 +102,7 @@ public class OyeRickshawBackendController {
         String result="Not found";
         try{
             Double rating=passengerRepository.findByPassengerId(passengerId).getRating();
-            return rating.toString().substring(0,4);
+            return rating.toString();
         }
         catch (NullPointerException e){return result;}
     }
