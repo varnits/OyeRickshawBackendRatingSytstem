@@ -31,8 +31,8 @@ The application can be used to-
 4. The passenger should be able to see his aggregated rating based on all the rides he has taken.
    - A Get API with the request mapped to "/getpassengerrating/{driverId}" defined in the REST controller 
    
-The Rating ranges from 0-5   
-The application by default runs on server port 8080 
-The jdk version used for this project  - 15
-use the mongo connection URI as an environment variable(MONGO_STRING) or replace it with the uri in properties file
+- The Rating ranges from 0-5   
+- The application by default runs on server port 8080 
+- The jdk version used for this project  - 15
+- Use the mongo connection URI as an environment variable(MONGO_STRING) or replace it with the uri in properties file
 
