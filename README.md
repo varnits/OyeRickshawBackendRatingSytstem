@@ -32,5 +32,6 @@ The application can be used to-
    - A Get API with the request mapped to "/getpassengerrating/{driverId}" defined in the REST controller 
    
 The Rating ranges from 0-5   
-The application by default runs on server port 8080    
+The application by default runs on server port 8080 
+The jdk version used for this project  - 15
 
