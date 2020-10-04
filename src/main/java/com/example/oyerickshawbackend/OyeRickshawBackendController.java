@@ -19,55 +19,48 @@ public class OyeRickshawBackendController {
     private DriverRepository driverRepository;
     @Autowired
     private PassengerRepository passengerRepository;
-    @RequestMapping(value = "/kk/{id}", method = RequestMethod.GET)
-    public void getPetById(@PathVariable("id") ObjectId id) {
-      System.out.println("sdadas");
-    }
-    @RequestMapping(value = "/driverrating/{rideId}/{rating}", method = RequestMethod.POST)
-    public String rateDriverbyRideId(@PathVariable("rideId")String rideId,@PathVariable("rating")String rating) {
-        System.out.println("sdadas");
 
-        return rateDriver(rideId,Double.valueOf(rating));
+    @RequestMapping(value = "/driverrating/{rideId}/{rating}", method = RequestMethod.PATCH)
+    public String rateDriverbyRideId(@PathVariable("rideId")String rideId,@PathVariable("rating")Double rating) {
+
+        return rateDriver(rideId,rating);
 
     }
     @RequestMapping(value = "/getdriverrating/{driverId}", method = RequestMethod.GET)
     public String getRatingOfDriver(@PathVariable("driverId")String driverId) {
-        System.out.println("sdadas");
 
         return getRatingForDriver(driverId);
 
     }
     @RequestMapping(value = "/getpassengerrating/{passengerId}", method = RequestMethod.GET)
     public String getRatingOfPassenger(@PathVariable("passengerId")String passengerId) {
-        System.out.println("sdadas");
         return getRatingForPasssenger(passengerId);
 
     }
 
 
-    @RequestMapping(value = "/passengerrating/{rideId}/{rating}", method = RequestMethod.POST)
-    public String ratePassengerbyRideId(@PathVariable("rideId")String rideId,@PathVariable("rating")String rating) {
-        System.out.println("sdadas");
+    @RequestMapping(value = "/passengerrating/{rideId}/{rating}", method = RequestMethod.PATCH)
+    public String ratePassengerbyRideId(@PathVariable("rideId")String rideId,@PathVariable("rating")Double rating) {
 
-        return ratePassenger(rideId,Double.valueOf(rating));
+        return ratePassenger(rideId,rating);
 
     }
-    @RequestMapping(value = "/k", method = RequestMethod.GET)
-    public String bc() {
-        return "sda";
-    }
-
+    //Fetches the driverid for a particular rideId and updates the ratings of that driver
     public String rateDriver(String rideId,Double rating){
-        System.out.println(" s"+rideId);
-        Ride ride=(rideRepository.findByRideId(rideId));
-        String driverId=ride.getDriverId();
-        System.out.println(" kks"+driverId);
+        Ride ride=rideRepository.findByRideId(rideId);
+        String driverId;
+        try {
+            driverId=ride.getDriverId();
+        }
+        catch(NullPointerException n){
+            return "Invalid Ride Id";
+        }
 
         Driver driver = driverRepository.findByDriverId(driverId);
-        Double r = driver.getRating();
+        Double oldRating = driver.getRating();
         int ridesCompleted = driver.getRidesCompleted();
-        Double newr = ((r * ridesCompleted) + rating) / (ridesCompleted + 1);
-        driver.setRating(newr);
+        Double newRating = ((oldRating * ridesCompleted) + rating) / (ridesCompleted + 1);
+        driver.setRating(newRating);
         driver.setRidesCompleted(ridesCompleted + 1);
 
         driverRepository.save(driver);
@@ -76,20 +69,28 @@ public class OyeRickshawBackendController {
 
         return String.valueOf(driverRepository.findByDriverId(driverId).getRating());
     }
+    //Fetches the driverid for a particular rideId and updates the ratings of that driver
     public String ratePassenger(String rideId,Double rating){
-        Ride ride=(rideRepository.findByRideId(rideId));
-        String passengerId=ride.getPassengerId();
+        Ride ride=rideRepository.findByRideId(rideId);
+        String passengerId;
+        try {
+            passengerId=ride.getPassengerId();
+        }
+        catch(NullPointerException n){
+            return "Invalid Ride Id";
+        }
 
         Passenger passenger=passengerRepository.findByPassengerId(passengerId);
-        Double p=passenger.getRating();
+        Double oldRating=passenger.getRating();
         int ridesCompleted=passenger.getRidesCompleted();
-        Double newr=((p*ridesCompleted)+rating)/(ridesCompleted+1);
-        passenger.setRating(newr);
+        Double newRating=((oldRating*ridesCompleted)+rating)/(ridesCompleted+1);
+        passenger.setRating(newRating);
         passenger.setRidesCompleted(ridesCompleted+1);
 
        passengerRepository.save(passenger);
         return String.valueOf(passengerRepository.findByPassengerId(passengerId).getRating());
     }
+    //Fetches the ratings for a particular driverId
     private String getRatingForDriver(String driverId) {
         String rating="Not found";
         try{
@@ -98,6 +99,7 @@ public class OyeRickshawBackendController {
         }
         catch (NullPointerException e){return rating;}
     }
+    //Fetches the ratings for a particular driverId
     private String getRatingForPasssenger(String passengerId) {
         String result="Not found";
         try{
