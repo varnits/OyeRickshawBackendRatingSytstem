@@ -1,18 +1,18 @@
 # OyeRickshawBackendRatingSytstem
 This is a springboot application that uses Mongo as a database.
 The database has 3 collections
-1. rides
-  -rideId(String)
-  -passengerId(String)
-  -driverId(String)
-2. passengers
-  -passengersId(String)
-  -ridesCompleted(Integer)
-  -rating(Double)
-3. drivers
-  -driversId(String)
-  -ridesCompleted(Integer)
-  -rating(Double)
+1. rides ( contains 3 fields)
+  - rideId(String)
+  - passengerId(String)
+  - driverId(String)
+2. passengers ( contains 3 fields)
+  - passengersId(String)
+  - ridesCompleted(Integer)
+  - rating(Double)
+3. drivers ( contains 3 fields)
+  - driversId(String)
+  - ridesCompleted(Integer)
+  - rating(Double)
  
  For the purpose of this application, The following entities have been inserted in the MongoDB database
  -  riderIds R00001-6
@@ -31,6 +31,8 @@ The application can be used to-
 4. The passenger should be able to see his aggregated rating based on all the rides he has taken.
    - A Get API with the request mapped to "/getpassengerrating/{driverId}" defined in the REST controller 
    
-The Rating ranges from 0-5   
-The application by default runs on server port 8080    
+- The Rating ranges from 0-5   
+- The application by default runs on server port 8080 
+- The jdk version used for this project  - 15
+- Use the mongo connection URI as an environment variable(MONGO_STRING) or replace it with the uri in properties file
 
