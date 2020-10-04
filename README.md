@@ -34,4 +34,5 @@ The application can be used to-
 The Rating ranges from 0-5   
 The application by default runs on server port 8080 
 The jdk version used for this project  - 15
+use the mongo connection URI as an environment variable(MONGO_STRING) or replace it with the uri in properties file
 
