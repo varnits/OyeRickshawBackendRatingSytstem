@@ -2,17 +2,17 @@
 This is a springboot application that uses Mongo as a database.
 The database has 3 collections
 1. rides
-  -rideId(String)
-  -passengerId(String)
-  -driverId(String)
+  - rideId(String)
+  - passengerId(String)
+  - driverId(String)
 2. passengers
-  -passengersId(String)
-  -ridesCompleted(Integer)
-  -rating(Double)
+  - passengersId(String)
+  - ridesCompleted(Integer)
+  - rating(Double)
 3. drivers
-  -driversId(String)
-  -ridesCompleted(Integer)
-  -rating(Double)
+  - driversId(String)
+  - ridesCompleted(Integer)
+  - rating(Double)
  
  For the purpose of this application, The following entities have been inserted in the MongoDB database
  -  riderIds R00001-6
